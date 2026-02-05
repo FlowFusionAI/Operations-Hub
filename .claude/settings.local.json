@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command:*)",
+      "Bash(npx supabase:*)",
+      "Bash(del \"c:\\\\Users\\\\saura\\\\Desktop\\\\Professional\\\\operations_hub\\\\supabase\\\\migrations\\\\20260205230423_initial_schema.sql\")",
+      "Bash(claude mcp add:*)",
+      "mcp__supabase__list_migrations",
+      "mcp__supabase__list_tables"
+    ]
+  }
+}
