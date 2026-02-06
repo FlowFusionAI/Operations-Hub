@@ -1,9 +1,9 @@
-# OpsHub MVP — Core Platform + Onboarding Module
+# Operations Hub MVP — Core Platform + Onboarding Module
 
 ## 0) Intention & Client Impact
 
 ### What this product is
-OpsHub is an operations platform that makes business processes **visible, accountable, and reliable**. It provides:
+Operations Hub is an operations platform that makes business processes **visible, accountable, and reliable**. It provides:
 - A **process layer** (stages, owners, due dates, progress, audit trail)
 - A **dashboard layer** (what's done, what's stuck, what's overdue)
 - An **automation execution layer** (n8n runs tasks in the background)
@@ -18,7 +18,7 @@ Most SMEs run onboarding through scattered emails, documents, and people memory.
 - manager time waste
 - zero visibility / "where are we at?" questions
 
-OpsHub solves this by turning onboarding into a **tracked workflow**:
+Operations Hub solves this by turning onboarding into a **tracked workflow**:
 - every employee has a known onboarding plan (template-based)
 - tasks are scheduled and delivered automatically
 - progress is visible to managers/admin
@@ -193,7 +193,7 @@ This prevents notification spam for managers who prefer checking the dashboard.
 ---
 
 ### 5.2 Events (Trigger Mechanism)
-OpsHub uses an `events` table as a "queue-lite" and integration boundary.
+Operations Hub uses an `events` table as a "queue-lite" and integration boundary.
 
 **Event fields**
 - `id` (uuid)
@@ -437,7 +437,7 @@ active → cancelled
 
 **Access mechanism**
 - Each onboarding instance has a `portal_token` (secure random string, generated at creation).
-- Portal URL: `https://app.opshub.com/portal/{portal_token}`
+- Portal URL: `https://app.Operations Hub.com/portal/{portal_token}`
 - No authentication required — the token itself provides access (similar to shared Google Docs links).
 
 **Portal content**

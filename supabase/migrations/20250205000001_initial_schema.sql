@@ -1,4 +1,4 @@
--- OpsHub MVP: Complete database schema
+-- Operations Hub MVP: Complete database schema
 -- All timestamps in UTC (timestamptz), UUIDs for all PKs, org-scoped data
 
 -- ============================================================
