@@ -82,6 +82,7 @@
   **Quality:**
   - [x] `npm run build` passes
 - **Files touched**: `app/(auth)/create-org/page.tsx`, `lib/actions/org.ts`, `lib/motion.ts`, `app/globals.css`, `app/layout.tsx`, `app/(auth)/layout.tsx`, `components/background-animation.tsx`, `components/page-transition.tsx`, `components/staggered-list.tsx`, `components/ui/animated-card.tsx`, `components/ui/select.tsx`, `docs/DESIGN.md`
+- **Bug fix (fix/org-creation-error)**: Org creation failed with "Failed to create organization" due to two RLS issues: (1) `.insert().select("id")` uses `INSERT ... RETURNING` which requires a SELECT policy, but the org SELECT policy (`is_org_member`) fails because no membership exists yet for the new org. Fix: generate UUID with `randomUUID()` before insert, eliminating the need for RETURNING. (2) Membership INSERT policy required `is_org_admin` which fails for the first membership. Fix: added "Founders can create initial owner membership" RLS policy allowing self-insert as owner when no memberships exist for that org.
 
 ---
 
