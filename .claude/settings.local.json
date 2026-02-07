@@ -11,7 +11,22 @@
       "Bash(gh auth:*)",
       "Bash(where:*)",
       "Bash(cmd /c \"where gh\")",
-      "Bash(cmd /c:*)"
+      "Bash(cmd /c:*)",
+      "Bash(dir:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npx shadcn@latest add sonner -y)",
+      "Bash(npm ls:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(if exist nul del nul)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: project infrastructure setup \\(T-001\\)\n\nInstall and configure core dependencies: @supabase/ssr, @supabase/supabase-js,\nshadcn/ui \\(with Sonner toast\\), and server-only. Create Supabase client utilities\n\\(server, browser, service-role\\), auth session refresh middleware, audit logging\nutility, and event insertion utility.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create --title \"feat: project infrastructure setup \\(T-001\\)\" --body \"$\\(cat <<''EOF''\n## Summary\n- Installed and configured shadcn/ui, @supabase/ssr, @supabase/supabase-js, and server-only\n- Created Supabase client utilities: server \\(cookie-based\\), browser, and service-role \\(server-only\\)\n- Created auth session refresh middleware\n- Created shared `createAuditEntry\\(\\)` and `insertEvent\\(\\)` utilities for use by all future tasks\n- Set up Sonner toast notifications in root layout\n- Updated app metadata to \"Operations Hub\"\n\n## Notes\n- Next.js 16 shows a deprecation warning suggesting \"proxy\" over \"middleware\", but the middleware pattern is what @supabase/ssr officially requires for session refresh and still works correctly\n- Removed unused `next-themes` dependency \\(auto-installed by shadcn, not needed since we''re not doing theme toggling\\)\n\n## Test plan\n- [ ] `npm run build` passes cleanly\n- [ ] Verify `lib/supabase/server.ts`, `client.ts`, and `service.ts` export correct client functions\n- [ ] Verify `lib/audit.ts` exports `createAuditEntry` with correct signature\n- [ ] Verify `lib/events.ts` exports `insertEvent` with correct signature\n- [ ] Verify `middleware.ts` refreshes auth session\n- [ ] Verify Toaster renders in root layout\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")",
+      "Bash(cmd.exe:*)"
     ]
   }
 }
