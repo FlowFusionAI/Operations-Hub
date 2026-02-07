@@ -31,7 +31,7 @@ export async function signup(formData: FormData) {
     return { error: error.message }
   }
 
-  redirect("/create-org")
+  redirect("/login?confirmed=pending")
 }
 
 export async function login(formData: FormData) {
@@ -51,6 +51,24 @@ export async function login(formData: FormData) {
 
   if (error) {
     return { error: error.message }
+  }
+
+  // Check if user has an org membership — if not, send to org creation
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (user) {
+    const { data: membership } = await supabase
+      .from("memberships")
+      .select("id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .single()
+
+    if (!membership) {
+      redirect("/create-org")
+    }
   }
 
   redirect("/dashboard")
