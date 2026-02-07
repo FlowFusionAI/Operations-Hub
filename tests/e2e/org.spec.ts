@@ -65,7 +65,7 @@ test.describe("Org Creation Page", () => {
       return
     }
 
-    await expect(page.getByText("London (GMT)")).toBeVisible()
+    await expect(page.getByRole("combobox")).toHaveText("London (GMT)")
   })
 
   test("form fields are properly labeled for accessibility", async ({

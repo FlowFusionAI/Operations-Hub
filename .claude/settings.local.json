@@ -37,7 +37,11 @@
       "Bash(npx playwright show-report:*)",
       "Bash(npm run test:*)",
       "Bash(npm test:*)",
-      "mcp__supabase__search_docs"
+      "mcp__supabase__search_docs",
+      "Bash(npx playwright test --reporter=list)",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_publishable_keys",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\saura\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-saura-Desktop-Professional-operations-hub\\\\95bbae57-8043-4256-bed5-64e3e2d478e3\\\\scratchpad\\\\create-test-user.ps1\")"
     ]
   },
   "enableAllProjectMcpServers": true,
