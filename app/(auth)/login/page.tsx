@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { Suspense, useState, useTransition } from "react"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { toast } from "sonner"
 import { login } from "@/lib/actions/auth"
+import { Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,9 +18,11 @@ import {
   CardFooter,
 } from "@/components/ui/card"
 
-export default function LoginPage() {
+function LoginForm() {
   const [isPending, startTransition] = useTransition()
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const searchParams = useSearchParams()
+  const confirmPending = searchParams.get("confirmed") === "pending"
 
   function validate(formData: FormData) {
     const newErrors: Record<string, string> = {}
@@ -57,6 +61,15 @@ export default function LoginPage() {
         <CardDescription>Sign in to your account</CardDescription>
       </CardHeader>
       <CardContent>
+        {confirmPending && (
+          <div className="mb-4 flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
+            <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <p className="text-sm text-muted-foreground">
+              Check your email for a confirmation link. Once confirmed, log in
+              below to continue.
+            </p>
+          </div>
+        )}
         <form id="login-form" onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
@@ -103,5 +116,13 @@ export default function LoginPage() {
         </p>
       </CardFooter>
     </Card>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
