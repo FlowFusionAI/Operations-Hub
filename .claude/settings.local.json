@@ -29,7 +29,19 @@
       "Bash(cmd.exe:*)",
       "Bash(npx shadcn@latest add:*)",
       "Bash(ls:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "mcp__supabase__get_logs",
+      "mcp__supabase__execute_sql",
+      "Bash(npx playwright install:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(npx playwright show-report:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm test:*)",
+      "mcp__supabase__search_docs"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }
