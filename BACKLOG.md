@@ -28,7 +28,7 @@
 |----|------|-------|--------|------------|
 | T-001 | Project Infrastructure Setup | 1 | done | none |
 | T-002 | Auth Pages (Signup + Login) | 1 | done | T-001 |
-| T-003 | Org Creation Flow | 1 | todo | T-002 |
+| T-003 | Org Creation Flow + Design System | 1 | active | T-002 |
 | T-004 | Protected App Layout + Navigation | 1 | todo | T-003 |
 | T-005 | Templates List Page | 2 | todo | T-004 |
 | T-006 | Template Create + Edit | 2 | todo | T-005 |

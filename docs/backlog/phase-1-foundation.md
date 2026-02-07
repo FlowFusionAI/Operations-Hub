@@ -48,20 +48,39 @@
 
 ---
 
-## T-003: Org Creation Flow
-- **Status**: todo
+## T-003: Org Creation Flow + Design System
+- **Status**: active
 - **Branch**: `feat/org-creation`
 - **Depends on**: T-002
-- **Description**: After signup, user lands on `/create-org` page. They enter an org name and timezone (default Europe/London with a dropdown). On submit, create the organization row AND a membership row (role = owner) in a single server action. Then redirect to `/dashboard`. If a logged-in user already has an org membership, skip this page and go straight to dashboard. Audit log entry on org creation.
+- **Description**: After signup, user lands on `/create-org` page. They enter an org name and timezone (default Europe/London with a dropdown). On submit, create the organization row AND a membership row (role = owner) in a single server action. Then redirect to `/dashboard`. If a logged-in user already has an org membership, skip this page and go straight to dashboard. Audit log entry on org creation. Use `/frontend-design` skill and framer-motion for smooth professional feel. Default theme is dark for the whole site.
 - **Acceptance criteria**:
-  - [ ] `/create-org` page with org name input and timezone dropdown
-  - [ ] Submit creates organization + membership (role=owner) atomically
-  - [ ] Redirect to `/dashboard` after creation
-  - [ ] If user already has org membership, redirect away from `/create-org`
-  - [ ] Timezone dropdown includes common timezones (Europe/London as default)
-  - [ ] Audit log entry: `org.created`
-  - [ ] `npm run build` passes
-- **Files likely touched**: `app/(auth)/create-org/`, `lib/actions/org.ts`
+  **Design System Setup:**
+  - [x] `framer-motion` installed
+  - [x] `lib/motion.ts` created with reusable animation presets (transitions, page/card/list/modal/toast variants)
+  - [x] `app/globals.css` updated with dark-first indigo-blue OKLCH palette
+  - [x] Glass-morphism utility classes added (`glass`, `glass-elevated`, `glow-primary`, `hover-glow`)
+  - [x] `app/layout.tsx` sets dark mode as default (`className="dark"` on html)
+  - [x] `docs/DESIGN.md` created with full design system documentation
+  - [x] `components/background-animation.tsx` — floating gradient orbs
+  - [x] `components/page-transition.tsx` — route transition wrapper
+  - [x] `components/staggered-list.tsx` — staggered list animation
+  - [x] `components/ui/animated-card.tsx` — animated card component
+  **Auth Layout Enhancement:**
+  - [x] `app/(auth)/layout.tsx` updated with `BackgroundAnimation` component
+  - [x] Login/signup pages verified with dark theme
+  **Org Creation Page:**
+  - [x] `/create-org` page with animated card entrance (used `/frontend-design` skill)
+  - [x] Org name input with validation
+  - [x] Timezone dropdown with 25 common timezones (Europe/London default)
+  - [x] Submit creates organization + membership (role=owner) atomically
+  - [x] Redirect to `/dashboard` after creation
+  - [x] If user already has org membership, redirect away from `/create-org`
+  - [x] Background animation on page (floating gradient orbs)
+  - [x] Loading state animation on submit (spinner + text)
+  - [x] Audit log entry: `org.created`
+  **Quality:**
+  - [x] `npm run build` passes
+- **Files touched**: `app/(auth)/create-org/page.tsx`, `lib/actions/org.ts`, `lib/motion.ts`, `app/globals.css`, `app/layout.tsx`, `app/(auth)/layout.tsx`, `components/background-animation.tsx`, `components/page-transition.tsx`, `components/staggered-list.tsx`, `components/ui/animated-card.tsx`, `components/ui/select.tsx`, `docs/DESIGN.md`
 
 ---
 
