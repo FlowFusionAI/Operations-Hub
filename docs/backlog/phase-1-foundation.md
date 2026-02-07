@@ -6,22 +6,22 @@
 ---
 
 ## T-001: Project Infrastructure Setup
-- **Status**: todo
+- **Status**: done
 - **Branch**: `feat/infrastructure`
 - **Depends on**: none (database migration already applied)
 - **Description**: Install and configure all core dependencies. Create Supabase client utilities (server, browser, and service-role). Create shared utilities for audit logging and event insertion that all future tasks will use. Set up shadcn/ui and toast notification infrastructure.
 - **Acceptance criteria**:
-  - [ ] shadcn/ui initialized with default config
-  - [ ] `@supabase/ssr` and `@supabase/supabase-js` installed
-  - [ ] `lib/supabase/server.ts` — server-side Supabase client (uses cookies)
-  - [ ] `lib/supabase/client.ts` — browser-side Supabase client
-  - [ ] `lib/supabase/service.ts` — service-role client (server-only, for portal)
-  - [ ] `.env.local` with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
-  - [ ] `middleware.ts` refreshes auth session on every request
-  - [ ] `lib/audit.ts` — `createAuditEntry(orgId, action, entityType, entityId, meta?, actorUserId?)` utility
-  - [ ] `lib/events.ts` — `insertEvent(type, orgId, payload, idempotencyKey?)` utility
-  - [ ] Toast notification component set up (shadcn/ui Sonner or Toast)
-  - [ ] `npm run build` passes
+  - [x] shadcn/ui initialized with default config
+  - [x] `@supabase/ssr` and `@supabase/supabase-js` installed
+  - [x] `lib/supabase/server.ts` — server-side Supabase client (uses cookies)
+  - [x] `lib/supabase/client.ts` — browser-side Supabase client
+  - [x] `lib/supabase/service.ts` — service-role client (server-only, for portal)
+  - [x] `.env.local` with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+  - [x] `middleware.ts` refreshes auth session on every request
+  - [x] `lib/audit.ts` — `createAuditEntry(orgId, action, entityType, entityId, meta?, actorUserId?)` utility
+  - [x] `lib/events.ts` — `insertEvent(type, orgId, payload, idempotencyKey?)` utility
+  - [x] Toast notification component set up (shadcn/ui Sonner or Toast)
+  - [x] `npm run build` passes
 - **Files likely touched**: `lib/supabase/`, `lib/audit.ts`, `lib/events.ts`, `middleware.ts`, `.env.local`, `package.json`, `components/ui/`
 - **Notes**: The audit and events utilities are created here because nearly every future task depends on them. The service-role client is needed later for the employee portal (T-018).
 

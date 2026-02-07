@@ -165,7 +165,8 @@ All routes live under `app/` using Next.js App Router conventions:
 ### Before Saying You're Done
 1. Run `npm run build` — fix any type errors or build failures.
 2. Verify all acceptance criteria from the task are met.
-3. If you had to make a judgment call not covered by the PRD, mention it so the human can review.
+3. **Update checkboxes**: Mark all completed acceptance criteria as `[x]` in the phase file and update the task status to `done`. Update `BACKLOG.md` progress table accordingly.
+4. If you had to make a judgment call not covered by the PRD, mention it so the human can review.
 
 ### Things You Must Never Do
 - Never edit existing migration files — create new migrations if the schema needs to change.

@@ -11,14 +11,14 @@
 
 | Phase | Done | Total | Status |
 |-------|------|-------|--------|
-| 1. Foundation | 0 | 4 | Not started |
+| 1. Foundation | 1 | 4 | In progress |
 | 2. Templates | 0 | 3 | Not started |
 | 3. Employees + Onboarding | 0 | 6 | Not started |
 | 4. Dashboard + Visibility | 0 | 4 | Not started |
 | 5. Portal + Settings + Invites | 0 | 3 | Not started |
 | 6. Automation + Email | 0 | 2 | Not started |
 | 7. Metrics + Polish | 0 | 2 | Not started |
-| **Total** | **0** | **24** | |
+| **Total** | **1** | **24** | |
 
 ---
 
@@ -26,7 +26,7 @@
 
 | ID | Task | Phase | Status | Depends On |
 |----|------|-------|--------|------------|
-| T-001 | Project Infrastructure Setup | 1 | todo | none |
+| T-001 | Project Infrastructure Setup | 1 | done | none |
 | T-002 | Auth Pages (Signup + Login) | 1 | todo | T-001 |
 | T-003 | Org Creation Flow | 1 | todo | T-002 |
 | T-004 | Protected App Layout + Navigation | 1 | todo | T-003 |
