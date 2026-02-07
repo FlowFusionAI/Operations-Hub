@@ -1,4 +1,9 @@
 import { defineConfig, devices } from "@playwright/test"
+import path from "path"
+import dotenv from "dotenv"
+
+// Load test-specific env vars (TEST_USER_EMAIL, TEST_USER_PASSWORD)
+dotenv.config({ path: path.resolve(__dirname, ".env.test.local") })
 
 export default defineConfig({
   testDir: "./tests",
