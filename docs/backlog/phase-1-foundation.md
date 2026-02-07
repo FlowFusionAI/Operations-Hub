@@ -28,18 +28,22 @@
 ---
 
 ## T-002: Auth Pages (Signup + Login)
-- **Status**: todo
+- **Status**: done
 - **Branch**: `feat/auth`
 - **Depends on**: T-001
 - **Description**: Build signup and login pages using Supabase Auth with email + password. Signup page at `/signup`, login page at `/login`. After successful signup, redirect to `/create-org`. After successful login, redirect to `/dashboard`. Include basic form validation and error messages. Add links between login and signup pages.
 - **Acceptance criteria**:
-  - [ ] `/signup` page with email + password + confirm password
-  - [ ] `/login` page with email + password
-  - [ ] Successful signup creates Supabase auth user and redirects to `/create-org`
-  - [ ] Successful login redirects to `/dashboard`
-  - [ ] Invalid credentials show error message (toast)
-  - [ ] Links between signup and login pages
-  - [ ] `npm run build` passes
+  - [x] `/signup` page with email + password + confirm password
+  - [x] `/login` page with email + password
+  - [x] Successful signup creates Supabase auth user and redirects to `/create-org`
+  - [x] Successful login redirects to `/dashboard`
+  - [x] Invalid credentials show error message (toast)
+  - [x] Links between signup and login pages
+  - [x] `npm run build` passes
+- **Additional completed**:
+  - [x] `lib/actions/auth.ts` — server actions for signup and login
+  - [x] `app/(auth)/layout.tsx` — centered auth layout with dot-grid background
+  - [x] shadcn/ui components installed (button, input, label, card)
 - **Files likely touched**: `app/(auth)/signup/`, `app/(auth)/login/`, `lib/actions/auth.ts`
 
 ---
