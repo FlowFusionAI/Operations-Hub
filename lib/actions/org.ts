@@ -1,5 +1,6 @@
 "use server"
 
+import { randomUUID } from "crypto"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { createAuditEntry } from "@/lib/audit"
@@ -42,17 +43,21 @@ export async function createOrganization(formData: FormData) {
     redirect("/dashboard")
   }
 
+  // Generate ID upfront so we don't need RETURNING (which requires a SELECT
+  // policy the user can't satisfy before their membership exists).
+  const orgId = randomUUID()
+
   // Create organization
-  const { data: org, error: orgError } = await supabase
+  const { error: orgError } = await supabase
     .from("organizations")
     .insert({
+      id: orgId,
       name,
       timezone,
     })
-    .select("id")
-    .single()
 
   if (orgError) {
+    console.error("Org creation failed:", orgError.message)
     return { error: "Failed to create organization. Please try again." }
   }
 
@@ -60,23 +65,24 @@ export async function createOrganization(formData: FormData) {
   const { error: membershipError } = await supabase
     .from("memberships")
     .insert({
-      org_id: org.id,
+      org_id: orgId,
       user_id: user.id,
       role: "owner",
     })
 
   if (membershipError) {
+    console.error("Membership creation failed:", membershipError.message)
     // Attempt to clean up the org if membership creation fails
-    await supabase.from("organizations").delete().eq("id", org.id)
+    await supabase.from("organizations").delete().eq("id", orgId)
     return { error: "Failed to set up organization membership. Please try again." }
   }
 
   // Audit log entry
   await createAuditEntry(
-    org.id,
+    orgId,
     "org.created",
     "organization",
-    org.id,
+    orgId,
     { name, timezone }
   )
 
