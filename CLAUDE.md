@@ -36,6 +36,28 @@ npm run start     # Start production server
 npm run lint      # Run ESLint
 ```
 
+## Git & PR Workflow
+
+GitHub CLI (`gh`) is installed and authenticated. Use it for all branch and PR operations.
+
+```bash
+# Branch creation (use the branch name from the task spec)
+git checkout -b feat/infrastructure
+
+# Push + open PR when task is complete and build passes
+git push -u origin feat/infrastructure
+gh pr create --title "feat: project infrastructure (T-001)" --body "..."
+
+# After human QA approval, merge and clean up
+gh pr merge <number> --squash --delete-branch
+```
+
+**Rules:**
+- One branch per task. Branch name comes from the task spec.
+- Always run `npm run build` before pushing.
+- PR title format: `feat: short description (T-XXX)` (or `fix:` for bug fixes).
+- Never force-push to `master`. Never merge your own PR without human approval.
+
 ## Database
 
 Schema is defined in `supabase/migrations/`. The initial migration sets up all enums, tables, indexes, `updated_at` triggers, and RLS policies.
@@ -125,9 +147,10 @@ All routes live under `app/` using Next.js App Router conventions:
 ## Workflow Rules for Claude Code
 
 ### Before Starting Any Task
-1. **Read `docs/backlog/ACTIVE.md`** to see the current task with full acceptance criteria.
-2. **Read CLAUDE.md** (this file) for conventions and patterns.
-3. **Check BACKLOG.md** for dependency status — if a dependency isn't marked `done`, stop and say so.
+1. **Read `docs/backlog/ACTIVE.md`** to find the current task ID and phase file.
+2. **Read the referenced phase file** (e.g. `docs/backlog/phase-1-foundation.md`) for the full task spec.
+3. **Read CLAUDE.md** (this file) for conventions and patterns.
+4. **Check BACKLOG.md** for dependency status — if a dependency isn't marked `done`, stop and say so.
 
 ### While Working on a Task
 1. **Stay in scope.** Only build what the current task asks for. Do not:

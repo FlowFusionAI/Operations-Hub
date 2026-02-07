@@ -59,9 +59,9 @@ Open `BACKLOG.md`. Scan the table. Find the next `todo` task whose dependencies 
 
 Open the relevant `docs/backlog/phase-*.md` file. Read the task's description and acceptance criteria.
 
-### Step 3: Activate the task (1 minute)
+### Step 3: Activate the task (30 seconds)
 
-1. Copy the task spec into `docs/backlog/ACTIVE.md`
+1. Set the task ID and phase file in `docs/backlog/ACTIVE.md` (just 2 lines to change)
 2. Update the task status to `active` in `BACKLOG.md`
 3. Create a git branch:
 
@@ -75,11 +75,10 @@ git checkout -b feat/infrastructure   # use the branch name from the task
 Use this prompt:
 
 ```
-I'm working on task T-001 from docs/backlog/ACTIVE.md.
-Read ACTIVE.md and CLAUDE.md for full context. Build what the task asks for.
+I'm working on the active task. Read docs/backlog/ACTIVE.md, then the phase file it points to, and CLAUDE.md. Build what the task asks for.
 ```
 
-That's it. Claude Code reads ACTIVE.md (one task, ~30 lines) + CLAUDE.md (conventions). It has everything it needs.
+That's it. Claude Code reads ACTIVE.md (a 2-line pointer) -> follows it to the phase file (reads just the relevant task) -> reads CLAUDE.md (conventions).
 
 ### Step 5: Review (5 minutes)
 
@@ -89,22 +88,29 @@ That's it. Claude Code reads ACTIVE.md (one task, ~30 lines) + CLAUDE.md (conven
 
 If something's wrong, tell Claude Code specifically: "The form doesn't validate that day_offset is a number" not "it's broken."
 
-### Step 6: Complete the task
+### Step 6: Push + open PR
 
-```bash
-git add .
-git commit -m "feat: project infrastructure setup (T-001)"
-git checkout master
-git merge feat/infrastructure
+Tell Claude Code to commit, push, and open a PR:
+
+```
+Commit your changes, push the branch, and open a PR for this task.
 ```
 
-Then update the backlog:
-1. Mark `done` in `BACKLOG.md` table
-2. Update the Progress section counts
-3. Clear `docs/backlog/ACTIVE.md` back to its empty state
-4. Commit: `git commit -am "chore: complete T-001"`
+Claude Code will:
+1. `git add` + `git commit` with a message like `feat: project infrastructure (T-001)`
+2. `git push -u origin feat/infrastructure`
+3. `gh pr create` with a summary and test plan
 
-### Step 7: Repeat
+### Step 7: QA + merge
+
+Review the PR in GitHub (or locally). If something needs fixing, tell Claude Code what's wrong.
+
+Once you're happy:
+- Merge the PR in GitHub (squash merge recommended), **or** tell Claude Code: `merge the PR`
+- Update `BACKLOG.md`: mark the task `done`, update the Progress counts
+- Reset `docs/backlog/ACTIVE.md` back to `_none_`
+
+### Step 8: Repeat
 
 Pick the next task. When an entire phase is done, move its file to `docs/backlog/archive/`.
 
@@ -122,7 +128,7 @@ You can run 2-3 instances on different tasks IF they don't touch the same files.
 - T-006 (template form) + T-007 (template detail) — both touch templates
 - T-012 (task completion) + T-013 (instance management) — both touch onboarding
 
-Each instance should be on its own branch. Merge one at a time back to master.
+Each instance should be on its own branch with its own PR. Merge PRs one at a time back to master.
 
 ---
 
@@ -150,7 +156,7 @@ Add it to `docs/backlog/ICEBOX.md`. Don't let it derail the current phase.
 ### For you (the human):
 1. **One task, one branch, one session.** Never give Claude Code multiple tasks at once.
 2. **Always start with "Read ACTIVE.md and CLAUDE.md."** This is the context injection that makes everything work.
-3. **Review before merging.** 5 minutes reading what Claude Code built prevents bugs downstream.
+3. **Review the PR before merging.** 5 minutes reading what Claude Code built prevents bugs downstream.
 4. **Keep BACKLOG.md updated.** It's your project management system.
 5. **Archive completed phases.** Keeps the working directory clean.
 
