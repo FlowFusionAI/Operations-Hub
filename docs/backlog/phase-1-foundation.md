@@ -86,17 +86,17 @@
 ---
 
 ## T-004: Protected App Layout + Navigation
-- **Status**: todo
+- **Status**: done
 - **Branch**: `feat/app-layout`
 - **Depends on**: T-003
 - **Description**: Create a protected layout for all authenticated app pages. If not logged in, redirect to `/login`. If logged in but no org membership, redirect to `/create-org`. Layout includes a sidebar with navigation links: Dashboard, Employees, Templates, Onboarding, Runs, Audit Log, Settings. Include org name in the sidebar header and a logout button. Dashboard page shows org name and a placeholder "Welcome to Operations Hub" message for now.
 - **Acceptance criteria**:
-  - [ ] Protected layout redirects unauthenticated users to `/login`
-  - [ ] Protected layout redirects users without org to `/create-org`
-  - [ ] Sidebar navigation with all 7 links (Dashboard, Employees, Templates, Onboarding, Runs, Audit Log, Settings)
-  - [ ] Active page highlighted in sidebar
-  - [ ] Org name displayed in sidebar header
-  - [ ] Logout button works (clears session, redirects to `/login`)
-  - [ ] `/dashboard` shows basic welcome page with org name
-  - [ ] `npm run build` passes
-- **Files likely touched**: `app/(protected)/layout.tsx`, `app/(protected)/dashboard/`, `components/sidebar.tsx`
+  - [x] Protected layout redirects unauthenticated users to `/login`
+  - [x] Protected layout redirects users without org to `/create-org`
+  - [x] Sidebar navigation with all 7 links (Dashboard, Employees, Templates, Onboarding, Runs, Audit Log, Settings)
+  - [x] Active page highlighted in sidebar
+  - [x] Org name displayed in sidebar header
+  - [x] Logout button works (clears session, redirects to `/login`)
+  - [x] `/dashboard` shows basic welcome page with org name
+  - [x] `npm run build` passes
+- **Files touched**: `app/(protected)/layout.tsx`, `app/(protected)/dashboard/page.tsx`, `components/sidebar.tsx`, `components/dashboard/dashboard-content.tsx`, `lib/actions/auth.ts`

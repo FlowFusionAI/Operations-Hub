@@ -2,7 +2,7 @@
 
 <!-- Update the line below when starting a new task. Claude Code reads this file. -->
 
-**Task**: T-002
+**Task**: T-004
 **File**: [phase-1-foundation.md](phase-1-foundation.md)
 
 <!-- Example:
