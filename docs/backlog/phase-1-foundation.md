@@ -45,6 +45,7 @@
   - [x] `app/(auth)/layout.tsx` — centered auth layout with dot-grid background
   - [x] shadcn/ui components installed (button, input, label, card)
 - **Files likely touched**: `app/(auth)/signup/`, `app/(auth)/login/`, `lib/actions/auth.ts`
+- **Bug fix (fix/signup-flow)**: Signup redirected to `/create-org` immediately, but with Supabase email confirmation enabled the user had no session yet, causing "You must be logged in" error on org creation. Fix: signup now redirects to `/login?confirmed=pending` with a banner prompting the user to confirm their email first. Login action also now checks for org membership and routes to `/create-org` if the user has none.
 
 ---
 

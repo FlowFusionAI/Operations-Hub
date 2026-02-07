@@ -135,6 +135,7 @@ All routes live under `app/` using Next.js App Router conventions:
 - Use a shared utility: `lib/audit.ts` with `createAuditEntry(orgId, action, entityType, entityId, meta?, actorUserId?)`.
 
 ### Styling
+- **Read [`docs/DESIGN.md`](docs/DESIGN.md) before any UI work.** It defines colors, typography, animation presets, glass-morphism utilities, and accessibility requirements. All UI implementations must follow it.
 - Use Tailwind CSS classes. No custom CSS files unless absolutely necessary.
 - Do not install additional UI libraries beyond shadcn/ui.
 - No emojis in the UI.
@@ -150,7 +151,8 @@ All routes live under `app/` using Next.js App Router conventions:
 1. **Read `docs/backlog/ACTIVE.md`** to find the current task ID and phase file.
 2. **Read the referenced phase file** (e.g. `docs/backlog/phase-1-foundation.md`) for the full task spec.
 3. **Read CLAUDE.md** (this file) for conventions and patterns.
-4. **Check BACKLOG.md** for dependency status — if a dependency isn't marked `done`, stop and say so.
+4. **If the task involves UI work**, also read **[`docs/DESIGN.md`](docs/DESIGN.md)** for the design system (colors, animations, glass-morphism, typography).
+5. **Check BACKLOG.md** for dependency status — if a dependency isn't marked `done`, stop and say so.
 
 ### While Working on a Task
 1. **Stay in scope.** Only build what the current task asks for. Do not:
@@ -167,6 +169,7 @@ All routes live under `app/` using Next.js App Router conventions:
 2. Verify all acceptance criteria from the task are met.
 3. **Update checkboxes**: Mark all completed acceptance criteria as `[x]` in the phase file and update the task status to `done`. Update `BACKLOG.md` progress table accordingly.
 4. If you had to make a judgment call not covered by the PRD, mention it so the human can review.
+5. **Commit and push**: Commit all changes and push to the task's feature branch (use `git push -u origin <branch-name>`).
 
 ### Things You Must Never Do
 - Never edit existing migration files — create new migrations if the schema needs to change.
