@@ -82,21 +82,22 @@
   **Quality:**
   - [x] `npm run build` passes
 - **Files touched**: `app/(auth)/create-org/page.tsx`, `lib/actions/org.ts`, `lib/motion.ts`, `app/globals.css`, `app/layout.tsx`, `app/(auth)/layout.tsx`, `components/background-animation.tsx`, `components/page-transition.tsx`, `components/staggered-list.tsx`, `components/ui/animated-card.tsx`, `components/ui/select.tsx`, `docs/DESIGN.md`
+- **Bug fix (fix/org-creation-error)**: Org creation failed with "Failed to create organization" due to two RLS issues: (1) `.insert().select("id")` uses `INSERT ... RETURNING` which requires a SELECT policy, but the org SELECT policy (`is_org_member`) fails because no membership exists yet for the new org. Fix: generate UUID with `randomUUID()` before insert, eliminating the need for RETURNING. (2) Membership INSERT policy required `is_org_admin` which fails for the first membership. Fix: added "Founders can create initial owner membership" RLS policy allowing self-insert as owner when no memberships exist for that org.
 
 ---
 
 ## T-004: Protected App Layout + Navigation
-- **Status**: todo
+- **Status**: done
 - **Branch**: `feat/app-layout`
 - **Depends on**: T-003
 - **Description**: Create a protected layout for all authenticated app pages. If not logged in, redirect to `/login`. If logged in but no org membership, redirect to `/create-org`. Layout includes a sidebar with navigation links: Dashboard, Employees, Templates, Onboarding, Runs, Audit Log, Settings. Include org name in the sidebar header and a logout button. Dashboard page shows org name and a placeholder "Welcome to Operations Hub" message for now.
 - **Acceptance criteria**:
-  - [ ] Protected layout redirects unauthenticated users to `/login`
-  - [ ] Protected layout redirects users without org to `/create-org`
-  - [ ] Sidebar navigation with all 7 links (Dashboard, Employees, Templates, Onboarding, Runs, Audit Log, Settings)
-  - [ ] Active page highlighted in sidebar
-  - [ ] Org name displayed in sidebar header
-  - [ ] Logout button works (clears session, redirects to `/login`)
-  - [ ] `/dashboard` shows basic welcome page with org name
-  - [ ] `npm run build` passes
-- **Files likely touched**: `app/(protected)/layout.tsx`, `app/(protected)/dashboard/`, `components/sidebar.tsx`
+  - [x] Protected layout redirects unauthenticated users to `/login`
+  - [x] Protected layout redirects users without org to `/create-org`
+  - [x] Sidebar navigation with all 7 links (Dashboard, Employees, Templates, Onboarding, Runs, Audit Log, Settings)
+  - [x] Active page highlighted in sidebar
+  - [x] Org name displayed in sidebar header
+  - [x] Logout button works (clears session, redirects to `/login`)
+  - [x] `/dashboard` shows basic welcome page with org name
+  - [x] `npm run build` passes
+- **Files touched**: `app/(protected)/layout.tsx`, `app/(protected)/dashboard/page.tsx`, `components/sidebar.tsx`, `components/dashboard/dashboard-content.tsx`, `lib/actions/auth.ts`
