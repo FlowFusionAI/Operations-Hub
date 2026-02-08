@@ -23,37 +23,37 @@
 ---
 
 ## T-006a: Template Form — Create & Edit Pages
-- **Status**: todo
+- **Status**: done
 - **Branch**: `feat/template-form`
 - **Depends on**: T-005
 - **Description**: Build create (`/templates/new`) and edit (`/templates/[id]/edit`) pages for onboarding template metadata. Form fields: template name (required), role description (optional), status toggle (active/inactive, default active). On save: create/update template, increment version on edit, create audit log entry. Validate required fields. Does NOT include the task builder — just template metadata.
 - **Acceptance criteria**:
-  - [ ] `/templates/new` creates a template (name, role_description, status)
-  - [ ] `/templates/[id]/edit` loads and updates an existing template
-  - [ ] Version increments on every edit save
-  - [ ] Audit log on create and update
-  - [ ] Validation: name required
-  - [ ] Redirect to detail page after save
-  - [ ] `npm run build` passes
+  - [x] `/templates/new` creates a template (name, role_description, status)
+  - [x] `/templates/[id]/edit` loads and updates an existing template
+  - [x] Version increments on every edit save
+  - [x] Audit log on create and update
+  - [x] Validation: name required
+  - [x] Redirect to detail page after save
+  - [x] `npm run build` passes
 - **Files likely touched**: `app/(protected)/templates/new/page.tsx`, `app/(protected)/templates/[id]/edit/page.tsx`, `components/templates/template-form.tsx`, `lib/actions/templates.ts`
 - **Delegation note**: Create `lib/actions/templates.ts` with `createTemplate` and `updateTemplate` server actions. Follow the pattern in `lib/actions/org.ts`. The form component should accept an optional `template` prop for edit mode.
 
 ---
 
 ## T-006b: Task Builder
-- **Status**: todo
-- **Branch**: `feat/template-tasks`
+- **Status**: done
+- **Branch**: `feat/template-form`
 - **Depends on**: T-006a
 - **Description**: Add the inline task builder to the template form. Extend `template-form.tsx` with a "Tasks" section below the metadata fields. Dynamic task list: add task, remove task, reorder with up/down buttons. Each task row: title (required), description (optional), day_offset (required, integer >= 0), assignee_type dropdown (employee/manager/custom_email), custom_email input (shown only when assignee_type = custom_email). sort_order auto-computed from position. Attachments: each task can have external URL pairs (name + url), add/remove dynamically. Update server actions to handle task creation/deletion alongside template save. blocked_by deferred to a later task.
 - **Acceptance criteria**:
-  - [ ] Can add and remove tasks from the template form
-  - [ ] Each task has title, description, day_offset, assignee_type fields
-  - [ ] custom_email field shows conditionally when assignee_type = "custom_email"
-  - [ ] Up/down buttons reorder tasks (sort_order auto-computed)
-  - [ ] Can add/remove attachment URL pairs (name + url) per task
-  - [ ] Validation: task title required, day_offset >= 0
-  - [ ] Tasks persist correctly on create and edit
-  - [ ] `npm run build` passes
+  - [x] Can add and remove tasks from the template form
+  - [x] Each task has title, description, day_offset, assignee_type fields
+  - [x] custom_email field shows conditionally when assignee_type = "custom_email"
+  - [x] Up/down buttons reorder tasks (sort_order auto-computed)
+  - [x] Can add/remove attachment URL pairs (name + url) per task
+  - [x] Validation: task title required, day_offset >= 0
+  - [x] Tasks persist correctly on create and edit
+  - [x] `npm run build` passes
 - **Files likely touched**: `components/templates/template-form.tsx`, `lib/actions/templates.ts`
 - **Delegation note**: Read the existing `template-form.tsx` and `lib/actions/templates.ts` from T-006a and extend them. Use `useState` for the local task list. On save, pass tasks array to the server action. The server action should delete existing tasks and re-insert (simpler than diffing). Follow existing form patterns (useTransition, toast errors).
 
