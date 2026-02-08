@@ -68,3 +68,34 @@ export async function getTemplateTasks(templateId: string, orgId: string) {
 export type TemplateTaskRow = Awaited<
   ReturnType<typeof getTemplateTasks>
 >[number]
+
+export async function getTemplateWithTasks(templateId: string, orgId: string) {
+  const supabase = await createClient()
+
+  const { data: template, error } = await supabase
+    .from("onboarding_templates")
+    .select("id, name, role_description, status, version, created_at, updated_at")
+    .eq("id", templateId)
+    .eq("org_id", orgId)
+    .single()
+
+  if (error || !template) {
+    return null
+  }
+
+  const { data: tasks } = await supabase
+    .from("template_tasks")
+    .select("id, title, description, day_offset, assignee_type, custom_email, sort_order, attachments")
+    .eq("template_id", templateId)
+    .eq("org_id", orgId)
+    .order("sort_order", { ascending: true })
+
+  return {
+    ...template,
+    tasks: tasks ?? [],
+  }
+}
+
+export type TemplateWithTasks = NonNullable<
+  Awaited<ReturnType<typeof getTemplateWithTasks>>
+>

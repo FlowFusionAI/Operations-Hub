@@ -225,3 +225,118 @@ export async function updateTemplate(formData: FormData) {
 
   redirect(`/templates/${templateId}`)
 }
+
+export async function toggleTemplateStatus(templateId: string, newStatus: "active" | "inactive") {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: "You must be logged in." }
+  }
+
+  const { data: membership } = await supabase
+    .from("memberships")
+    .select("org_id, role")
+    .eq("user_id", user.id)
+    .limit(1)
+    .single()
+
+  if (!membership) {
+    return { error: "You must belong to an organization." }
+  }
+
+  if (membership.role !== "owner" && membership.role !== "admin") {
+    return { error: "Only admins can change template status." }
+  }
+
+  const { error: updateError } = await supabase
+    .from("onboarding_templates")
+    .update({ status: newStatus })
+    .eq("id", templateId)
+    .eq("org_id", membership.org_id)
+
+  if (updateError) {
+    console.error("Template status toggle failed:", updateError.message)
+    return { error: "Failed to update template status." }
+  }
+
+  await createAuditEntry(
+    membership.org_id,
+    newStatus === "active" ? "template.activated" : "template.deactivated",
+    "template",
+    templateId,
+    { status: newStatus }
+  )
+
+  return { success: true }
+}
+
+export async function deleteTemplate(templateId: string) {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: "You must be logged in." }
+  }
+
+  const { data: membership } = await supabase
+    .from("memberships")
+    .select("org_id, role")
+    .eq("user_id", user.id)
+    .limit(1)
+    .single()
+
+  if (!membership) {
+    return { error: "You must belong to an organization." }
+  }
+
+  if (membership.role !== "owner" && membership.role !== "admin") {
+    return { error: "Only admins can delete templates." }
+  }
+
+  // Get template name for audit log before deleting
+  const { data: template } = await supabase
+    .from("onboarding_templates")
+    .select("name")
+    .eq("id", templateId)
+    .eq("org_id", membership.org_id)
+    .single()
+
+  if (!template) {
+    return { error: "Template not found." }
+  }
+
+  // Delete tasks first (cascade might handle this, but be explicit)
+  await supabase
+    .from("template_tasks")
+    .delete()
+    .eq("template_id", templateId)
+    .eq("org_id", membership.org_id)
+
+  const { error: deleteError } = await supabase
+    .from("onboarding_templates")
+    .delete()
+    .eq("id", templateId)
+    .eq("org_id", membership.org_id)
+
+  if (deleteError) {
+    console.error("Template deletion failed:", deleteError.message)
+    return { error: "Failed to delete template." }
+  }
+
+  await createAuditEntry(
+    membership.org_id,
+    "template.deleted",
+    "template",
+    templateId,
+    { name: template.name }
+  )
+
+  redirect("/templates")
+}
