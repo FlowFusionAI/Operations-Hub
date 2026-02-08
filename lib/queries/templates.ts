@@ -26,3 +26,45 @@ export async function getTemplatesWithTaskCount(orgId: string) {
 export type TemplateListItem = Awaited<
   ReturnType<typeof getTemplatesWithTaskCount>
 >[number]
+
+export async function getTemplateById(templateId: string, orgId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("onboarding_templates")
+    .select("id, name, role_description, status, version, created_at, updated_at")
+    .eq("id", templateId)
+    .eq("org_id", orgId)
+    .single()
+
+  if (error) {
+    return null
+  }
+
+  return data
+}
+
+export type TemplateDetail = NonNullable<
+  Awaited<ReturnType<typeof getTemplateById>>
+>
+
+export async function getTemplateTasks(templateId: string, orgId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("template_tasks")
+    .select("id, title, description, day_offset, assignee_type, custom_email, sort_order, attachments")
+    .eq("template_id", templateId)
+    .eq("org_id", orgId)
+    .order("sort_order", { ascending: true })
+
+  if (error) {
+    return []
+  }
+
+  return data ?? []
+}
+
+export type TemplateTaskRow = Awaited<
+  ReturnType<typeof getTemplateTasks>
+>[number]
