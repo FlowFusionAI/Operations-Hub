@@ -60,18 +60,18 @@
 ---
 
 ## T-007: Template Detail + Dry-Run Preview + Delete
-- **Status**: todo
+- **Status**: done
 - **Branch**: `feat/template-detail`
 - **Depends on**: T-006b
 - **Description**: Build template detail page at `/templates/[id]`. Shows template info (name, status, version, role description) and a read-only list of tasks with all their fields. Include Edit and Activate/Deactivate buttons. Delete button with confirmation dialog. Add a "Preview Schedule" feature: admin picks a hypothetical start date, and the page computes and displays the full task schedule with computed due dates (accounting for day_offsets and weekend skipping if enabled). Build shared `lib/dates.ts` with `addBusinessDays` utility (reused in Phase 3). This is a frontend-only computation — no records created.
 - **Acceptance criteria**:
-  - [ ] `/templates/[id]` shows template details and full task list (read-only)
-  - [ ] Edit button links to edit page
-  - [ ] Activate/Deactivate toggle changes template status with audit log
-  - [ ] Delete button with confirmation dialog removes template and redirects to `/templates`
-  - [ ] "Preview Schedule" date picker computes and shows task schedule
-  - [ ] Preview accounts for weekend skipping (based on org `skip_weekends` setting)
-  - [ ] Audit log on status change and delete
-  - [ ] `npm run build` passes
+  - [x] `/templates/[id]` shows template details and full task list (read-only)
+  - [x] Edit button links to edit page
+  - [x] Activate/Deactivate toggle changes template status with audit log
+  - [x] Delete button with confirmation dialog removes template and redirects to `/templates`
+  - [x] "Preview Schedule" date picker computes and shows task schedule
+  - [x] Preview accounts for weekend skipping (based on org `skip_weekends` setting)
+  - [x] Audit log on status change and delete
+  - [x] `npm run build` passes
 - **Files likely touched**: `app/(protected)/templates/[id]/page.tsx`, `components/templates/template-detail.tsx`, `lib/actions/templates.ts`, `lib/queries/templates.ts`, `lib/dates.ts`
 - **Delegation note**: Create `lib/dates.ts` as a shared utility. The `addBusinessDays` function takes a Date, an offset in days, and a boolean for weekend skipping. Add `toggleTemplateStatus` and `deleteTemplate` server actions to `lib/actions/templates.ts`. Add `getTemplateWithTasks` query to `lib/queries/templates.ts`. Use existing card/animation patterns from the dashboard for layout.
