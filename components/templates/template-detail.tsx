@@ -295,7 +295,7 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
                 type="date"
                 value={previewDate}
                 onChange={(e) => setPreviewDate(e.target.value)}
-                className="w-44"
+                className="w-44 scheme-dark"
               />
             </div>
           </div>

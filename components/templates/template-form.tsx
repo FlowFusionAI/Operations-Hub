@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import Link from "next/link"
 import { motion } from "framer-motion"
-import { Loader2, FileText, Plus, Trash2, ChevronUp, ChevronDown, Paperclip } from "lucide-react"
+import { Loader2, FileText, Plus, Trash2, ChevronUp, ChevronDown, Paperclip, ArrowLeft } from "lucide-react"
 import { toast } from "sonner"
 import { createTemplate, updateTemplate } from "@/lib/actions/templates"
 import { pageVariants, cardVariants, transitions } from "@/lib/motion"
@@ -203,6 +204,14 @@ export function TemplateForm({ template, existingTasks }: TemplateFormProps) {
       animate="animate"
       className="mx-auto max-w-2xl"
     >
+      <Link
+        href={template ? `/templates/${template.id}` : "/templates"}
+        className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        {template ? "Back to template" : "All Templates"}
+      </Link>
+
       <motion.div
         variants={cardVariants}
         initial="hidden"
