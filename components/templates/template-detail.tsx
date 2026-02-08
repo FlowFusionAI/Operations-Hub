@@ -19,6 +19,7 @@ import {
   Clock,
   ListChecks,
   Hash,
+  ChevronRight,
 } from "lucide-react"
 import {
   pageVariants,
@@ -243,7 +244,7 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid gap-3"
+            className="rounded-xl border border-border bg-card overflow-hidden divide-y divide-border/50"
           >
             {template.tasks.map((task, index) => {
               const assignee = ASSIGNEE_LABELS[task.assignee_type] ?? ASSIGNEE_LABELS.employee
@@ -254,80 +255,14 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
               }[]
 
               return (
-                <motion.div
+                <TaskRow
                   key={task.id}
-                  variants={listItemVariants}
-                  className="rounded-xl border border-border bg-card px-5 py-4"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-3 min-w-0">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary font-mono">
-                        {index + 1}
-                      </span>
-                      <div className="min-w-0">
-                        <h3 className="font-medium leading-snug">
-                          {task.title}
-                        </h3>
-                        {task.description && (
-                          <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-                            {task.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex shrink-0 items-center gap-3 text-sm text-muted-foreground">
-                      <span
-                        className="inline-flex items-center gap-1.5"
-                        title="Day offset from start date"
-                      >
-                        <Calendar className="h-3.5 w-3.5" />
-                        Day {task.day_offset}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Meta row */}
-                  <div className="mt-3 flex flex-wrap items-center gap-3 pl-9">
-                    <Badge variant="outline" className="gap-1.5">
-                      <AssigneeIcon className="h-3 w-3" />
-                      {assignee.label}
-                    </Badge>
-
-                    {task.assignee_type === "custom_email" &&
-                      task.custom_email && (
-                        <span className="text-xs text-muted-foreground font-mono">
-                          {task.custom_email}
-                        </span>
-                      )}
-
-                    {attachments.length > 0 && (
-                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                        <Paperclip className="h-3 w-3" />
-                        {attachments.length} attachment
-                        {attachments.length !== 1 && "s"}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Attachments */}
-                  {attachments.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-2 pl-9">
-                      {attachments.map((att, i) => (
-                        <a
-                          key={i}
-                          href={att.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/50 px-2.5 py-1 text-xs text-primary transition-colors hover:bg-primary/10"
-                        >
-                          <ExternalLink className="h-3 w-3" />
-                          {att.name}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
+                  task={task}
+                  index={index}
+                  assigneeLabel={assignee.label}
+                  AssigneeIcon={AssigneeIcon}
+                  attachments={attachments}
+                />
               )
             })}
           </motion.div>
@@ -426,6 +361,105 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
             </div>
           )}
         </motion.section>
+      )}
+    </motion.div>
+  )
+}
+
+function TaskRow({
+  task,
+  index,
+  assigneeLabel,
+  AssigneeIcon,
+  attachments,
+}: {
+  task: TemplateWithTasks["tasks"][number]
+  index: number
+  assigneeLabel: string
+  AssigneeIcon: typeof User
+  attachments: { name: string; url: string }[]
+}) {
+  const [expanded, setExpanded] = useState(false)
+  const hasDetails = !!task.description || attachments.length > 0
+
+  return (
+    <motion.div variants={listItemVariants}>
+      <button
+        type="button"
+        onClick={() => hasDetails && setExpanded(!expanded)}
+        className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+          hasDetails ? "cursor-pointer hover:bg-muted/30" : "cursor-default"
+        }`}
+      >
+        {/* Expand indicator */}
+        <ChevronRight
+          className={`h-3 w-3 shrink-0 text-muted-foreground/50 transition-transform ${
+            expanded ? "rotate-90" : ""
+          } ${!hasDetails ? "invisible" : ""}`}
+        />
+
+        {/* Index */}
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/10 text-[10px] font-medium text-primary font-mono">
+          {index + 1}
+        </span>
+
+        {/* Title */}
+        <span className="min-w-0 flex-1 truncate text-sm font-medium">
+          {task.title}
+        </span>
+
+        {/* Inline meta */}
+        <div className="flex shrink-0 items-center gap-2.5">
+          <Badge variant="outline" className="gap-1 py-0 h-5 text-[10px]">
+            <AssigneeIcon className="h-2.5 w-2.5" />
+            {assigneeLabel}
+          </Badge>
+
+          {task.assignee_type === "custom_email" && task.custom_email && (
+            <span className="hidden sm:inline text-[10px] text-muted-foreground font-mono max-w-[120px] truncate">
+              {task.custom_email}
+            </span>
+          )}
+
+          {attachments.length > 0 && (
+            <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Paperclip className="h-2.5 w-2.5" />
+              {attachments.length}
+            </span>
+          )}
+
+          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-mono whitespace-nowrap">
+            <Calendar className="h-3 w-3" />
+            +{task.day_offset}d
+          </span>
+        </div>
+      </button>
+
+      {/* Expandable detail row */}
+      {expanded && (
+        <div className="px-4 pb-3 pl-[4.25rem]">
+          {task.description && (
+            <p className="text-xs text-muted-foreground leading-relaxed mb-2">
+              {task.description}
+            </p>
+          )}
+          {attachments.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {attachments.map((att, i) => (
+                <a
+                  key={i}
+                  href={att.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded border border-border bg-background/50 px-2 py-0.5 text-[10px] text-primary transition-colors hover:bg-primary/10"
+                >
+                  <ExternalLink className="h-2.5 w-2.5" />
+                  {att.name}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </motion.div>
   )
