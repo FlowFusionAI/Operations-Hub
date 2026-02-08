@@ -12,13 +12,13 @@
 | Phase | Done | Total | Status |
 |-------|------|-------|--------|
 | 1. Foundation | 4 | 4 | Done |
-| 2. Templates | 0 | 3 | In progress |
+| 2. Templates | 1 | 4 | In progress |
 | 3. Employees + Onboarding | 0 | 6 | Not started |
 | 4. Dashboard + Visibility | 0 | 4 | Not started |
 | 5. Portal + Settings + Invites | 0 | 3 | Not started |
 | 6. Automation + Email | 0 | 2 | Not started |
 | 7. Metrics + Polish | 0 | 2 | Not started |
-| **Total** | **4** | **24** | |
+| **Total** | **5** | **25** | |
 
 ---
 
@@ -30,9 +30,10 @@
 | T-002 | Auth Pages (Signup + Login) | 1 | done | T-001 |
 | T-003 | Org Creation Flow + Design System | 1 | done | T-002 |
 | T-004 | Protected App Layout + Navigation | 1 | done | T-003 |
-| T-005 | Templates List Page | 2 | active | T-004 |
-| T-006 | Template Create + Edit | 2 | todo | T-005 |
-| T-007 | Template Detail + Dry-Run Preview | 2 | todo | T-006 |
+| T-005 | Templates List Page | 2 | done | T-004 |
+| T-006a | Template Form — Create & Edit Pages | 2 | todo | T-005 |
+| T-006b | Task Builder | 2 | todo | T-006a |
+| T-007 | Template Detail + Dry-Run Preview + Delete | 2 | todo | T-006b |
 | T-008 | Employees List + Create | 3 | todo | T-004 |
 | T-009 | Employee Detail + Edit | 3 | todo | T-008 |
 | T-010 | Start Onboarding (Materialization) | 3 | todo | T-009, T-007 |

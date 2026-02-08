@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Bash(powershell -Command:*)",
@@ -41,12 +44,9 @@
       "Bash(npx playwright test --reporter=list)",
       "mcp__supabase__get_project_url",
       "mcp__supabase__get_publishable_keys",
-<<<<<<< HEAD
       "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\saura\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-saura-Desktop-Professional-operations-hub\\\\95bbae57-8043-4256-bed5-64e3e2d478e3\\\\scratchpad\\\\create-test-user.ps1\")",
-      "Bash(gh pr create --title \"fix: QA test fixes from initial Phase 1 run\" --body \"$\\(cat <<''EOF''\n## Summary\n- Fix Playwright not loading `.env.test.local` \\(test user credentials weren''t picked up\\) — added dotenv config to `playwright.config.ts`\n- Fix invalid email test failing due to browser native `type=\"email\"` validation firing before JS validation — added `novalidate` attribute\n- Fix `/employees` redirect test 404ing because the route doesn''t exist yet \\(Phase 2\\) — skip on 404\n- Fix timezone default test strict mode violation — `getByText\\(''London \\(GMT\\)''\\)` matched 2 DOM elements, switched to `getByRole\\(''combobox''\\)`\n- Add branch-before-edit rule to `/qa` skill: any test/config edits must be done on a new branch, never on master\n- Add Playwright bash permissions to `.claude/settings.local.json`\n\n## Test plan\n- [x] `npm run build` passes\n- [x] `npx playwright test` — 35 passed, 7 skipped, 0 failed\n- [x] Skipped tests are expected \\(test user has no org membership, navigation tests skip gracefully\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")"
-=======
-      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\saura\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-saura-Desktop-Professional-operations-hub\\\\95bbae57-8043-4256-bed5-64e3e2d478e3\\\\scratchpad\\\\create-test-user.ps1\")"
->>>>>>> 4cc7553e4c48ea20ff2b8a5c37cf6a00d6a5b7c9
+      "Bash(gh pr create --title \"fix: QA test fixes from initial Phase 1 run\" --body \"$\\(cat <<''EOF''\n## Summary\n- Fix Playwright not loading `.env.test.local` \\(test user credentials weren''t picked up\\) — added dotenv config to `playwright.config.ts`\n- Fix invalid email test failing due to browser native `type=\"email\"` validation firing before JS validation — added `novalidate` attribute\n- Fix `/employees` redirect test 404ing because the route doesn''t exist yet \\(Phase 2\\) — skip on 404\n- Fix timezone default test strict mode violation — `getByText\\(''London \\(GMT\\)''\\)` matched 2 DOM elements, switched to `getByRole\\(''combobox''\\)`\n- Add branch-before-edit rule to `/qa` skill: any test/config edits must be done on a new branch, never on master\n- Add Playwright bash permissions to `.claude/settings.local.json`\n\n## Test plan\n- [x] `npm run build` passes\n- [x] `npx playwright test` — 35 passed, 7 skipped, 0 failed\n- [x] Skipped tests are expected \\(test user has no org membership, navigation tests skip gracefully\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")",
+      "Bash(gh pr create:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
