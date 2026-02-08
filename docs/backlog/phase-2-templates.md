@@ -6,18 +6,18 @@
 ---
 
 ## T-005: Templates List Page
-- **Status**: todo
+- **Status**: active
 - **Branch**: `feat/template-list`
 - **Depends on**: T-004
 - **Description**: Build the templates list page at `/templates`. Shows a table/list of all onboarding templates for the current org. Displays: name, status (active/inactive badge), version number, task count, created date. Include an "Active only" filter toggle (default on) and a "New Template" button that links to the create page. Empty state message when no templates exist.
 - **Acceptance criteria**:
-  - [ ] `/templates` page shows list of templates for current org
-  - [ ] Each row shows name, status badge, version, task count, created date
-  - [ ] "Active only" toggle filters to active templates (default on)
-  - [ ] "New Template" button links to `/templates/new`
-  - [ ] Empty state with helpful message when no templates exist
-  - [ ] Click on template row navigates to `/templates/[id]`
-  - [ ] `npm run build` passes
+  - [x] `/templates` page shows list of templates for current org
+  - [x] Each row shows name, status badge, version, task count, created date
+  - [x] "Active only" toggle filters to active templates (default on)
+  - [x] "New Template" button links to `/templates/new`
+  - [x] Empty state with helpful message when no templates exist
+  - [x] Click on template row navigates to `/templates/[id]`
+  - [x] `npm run build` passes
 - **Files likely touched**: `app/(protected)/templates/page.tsx`, `components/templates/`, `lib/queries/templates.ts`
 
 ---

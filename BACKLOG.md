@@ -11,14 +11,14 @@
 
 | Phase | Done | Total | Status |
 |-------|------|-------|--------|
-| 1. Foundation | 3 | 4 | In progress |
-| 2. Templates | 0 | 3 | Not started |
+| 1. Foundation | 4 | 4 | Done |
+| 2. Templates | 0 | 3 | In progress |
 | 3. Employees + Onboarding | 0 | 6 | Not started |
 | 4. Dashboard + Visibility | 0 | 4 | Not started |
 | 5. Portal + Settings + Invites | 0 | 3 | Not started |
 | 6. Automation + Email | 0 | 2 | Not started |
 | 7. Metrics + Polish | 0 | 2 | Not started |
-| **Total** | **3** | **24** | |
+| **Total** | **4** | **24** | |
 
 ---
 
@@ -29,8 +29,8 @@
 | T-001 | Project Infrastructure Setup | 1 | done | none |
 | T-002 | Auth Pages (Signup + Login) | 1 | done | T-001 |
 | T-003 | Org Creation Flow + Design System | 1 | done | T-002 |
-| T-004 | Protected App Layout + Navigation | 1 | active | T-003 |
-| T-005 | Templates List Page | 2 | todo | T-004 |
+| T-004 | Protected App Layout + Navigation | 1 | done | T-003 |
+| T-005 | Templates List Page | 2 | active | T-004 |
 | T-006 | Template Create + Edit | 2 | todo | T-005 |
 | T-007 | Template Detail + Dry-Run Preview | 2 | todo | T-006 |
 | T-008 | Employees List + Create | 3 | todo | T-004 |
