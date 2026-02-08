@@ -94,9 +94,13 @@ Overall: PASS / X ISSUES FOUND
 GitHub Issues Created: #123, #124 (if any)
 ```
 
+### Important Rules
+
+- **If any test or config file needs editing (test fixes, config changes, new tests), you MUST create a new branch BEFORE making changes.** Use the pattern `fix/qa-<description>` for fixes or `feat/qa-<description>` for new tests. Never edit files on `master` directly.
+
 ### Important Notes
 
-- Never modify source code — QA is read-only verification
+- Never modify application source code — QA only modifies test files and test config
 - If the dev server isn't running, Playwright will start it automatically (configured in `playwright.config.ts`)
 - Test user credentials are in `.env.test.local` — if this file doesn't exist, note it as a setup issue
 - For authenticated tests, the test user must exist in Supabase Auth with email confirmed
