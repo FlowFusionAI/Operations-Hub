@@ -21,7 +21,7 @@ import {
   Hash,
   ChevronRight,
   List,
-  GitBranch,
+  BarChart3,
 } from "lucide-react"
 import {
   pageVariants,
@@ -76,13 +76,13 @@ const ASSIGNEE_LABELS: Record<string, { label: string; icon: typeof User }> = {
   custom_email: { label: "Custom Email", icon: Mail },
 }
 
-type TaskView = "list" | "timeline"
+type ScheduleView = "table" | "gantt"
 
 export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [previewDate, setPreviewDate] = useState("")
-  const [taskView, setTaskView] = useState<TaskView>("list")
+  const [scheduleView, setScheduleView] = useState<ScheduleView>("table")
 
   const previewSchedule = useMemo(() => {
     if (!previewDate) return null
@@ -233,38 +233,7 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
 
       {/* Task List */}
       <section className="mb-10">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold tracking-tight">Tasks</h2>
-
-          {template.tasks.length > 0 && (
-            <div className="flex items-center rounded-lg border border-border bg-card p-0.5">
-              <button
-                type="button"
-                onClick={() => setTaskView("list")}
-                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                  taskView === "list"
-                    ? "bg-primary/15 text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <List className="h-3.5 w-3.5" />
-                List
-              </button>
-              <button
-                type="button"
-                onClick={() => setTaskView("timeline")}
-                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                  taskView === "timeline"
-                    ? "bg-primary/15 text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <GitBranch className="h-3.5 w-3.5" />
-                Timeline
-              </button>
-            </div>
-          )}
-        </div>
+        <h2 className="mb-4 text-xl font-semibold tracking-tight">Tasks</h2>
 
         {template.tasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
@@ -275,9 +244,8 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
               No tasks defined yet. Edit this template to add tasks.
             </p>
           </div>
-        ) : taskView === "list" ? (
+        ) : (
           <motion.div
-            key="list-view"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -303,76 +271,6 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
               )
             })}
           </motion.div>
-        ) : (
-          <motion.div
-            key="timeline-view"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="relative pl-8"
-          >
-            {/* Timeline vertical line */}
-            <div className="absolute left-[11px] top-2 bottom-2 w-px bg-primary/20" />
-
-            {template.tasks.map((task, index) => {
-              const assignee = ASSIGNEE_LABELS[task.assignee_type] ?? ASSIGNEE_LABELS.employee
-              const AssigneeIcon = assignee.icon
-              const attachments = (task.attachments ?? []) as {
-                name: string
-                url: string
-              }[]
-              const isLast = index === template.tasks.length - 1
-
-              return (
-                <motion.div
-                  key={task.id}
-                  variants={listItemVariants}
-                  className={`relative ${isLast ? "" : "pb-6"}`}
-                >
-                  {/* Node */}
-                  <div className="absolute -left-8 top-1.5 flex h-[22px] w-[22px] items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_2px] shadow-primary/30" />
-                  </div>
-
-                  {/* Content card */}
-                  <div className="rounded-lg border border-border/50 bg-card/60 px-4 py-3 transition-colors hover:bg-card/80">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono text-primary/70">
-                            +{task.day_offset}d
-                          </span>
-                          <span className="text-sm font-medium truncate">
-                            {task.title}
-                          </span>
-                        </div>
-
-                        {task.description && (
-                          <p className="mt-1 text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                            {task.description}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex shrink-0 items-center gap-2">
-                        <Badge variant="outline" className="gap-1 py-0 h-5 text-[10px]">
-                          <AssigneeIcon className="h-2.5 w-2.5" />
-                          {assignee.label}
-                        </Badge>
-
-                        {attachments.length > 0 && (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-                            <Paperclip className="h-2.5 w-2.5" />
-                            {attachments.length}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </motion.div>
         )}
       </section>
 
@@ -393,7 +291,35 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
                 {skipWeekends && " (weekends are skipped)"}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              {previewSchedule && (
+                <div className="flex items-center rounded-lg border border-border bg-card p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setScheduleView("table")}
+                    className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                      scheduleView === "table"
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <List className="h-3.5 w-3.5" />
+                    Table
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setScheduleView("gantt")}
+                    className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                      scheduleView === "gantt"
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <BarChart3 className="h-3.5 w-3.5" />
+                    Gantt
+                  </button>
+                </div>
+              )}
               <label htmlFor="preview-date" className="sr-only">
                 Start date
               </label>
@@ -407,8 +333,9 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
             </div>
           </div>
 
-          {previewSchedule && (
+          {previewSchedule && scheduleView === "table" && (
             <motion.div
+              key="table-view"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -457,6 +384,10 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
             </motion.div>
           )}
 
+          {previewSchedule && scheduleView === "gantt" && (
+            <GanttChart tasks={previewSchedule} />
+          )}
+
           {!previewSchedule && (
             <div className="rounded-xl border border-dashed border-border bg-card/50 px-6 py-10 text-center">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 mx-auto">
@@ -469,6 +400,194 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
           )}
         </motion.section>
       )}
+    </motion.div>
+  )
+}
+
+const ASSIGNEE_COLORS: Record<string, { bg: string; glow: string; text: string }> = {
+  employee: {
+    bg: "bg-primary",
+    glow: "shadow-primary/40",
+    text: "text-primary",
+  },
+  manager: {
+    bg: "bg-emerald-500",
+    glow: "shadow-emerald-500/40",
+    text: "text-emerald-400",
+  },
+  custom_email: {
+    bg: "bg-amber-500",
+    glow: "shadow-amber-500/40",
+    text: "text-amber-400",
+  },
+}
+
+function formatGanttDate(date: Date): string {
+  return date.toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+  })
+}
+
+function getDateKey(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+}
+
+function GanttChart({
+  tasks,
+}: {
+  tasks: Array<TemplateWithTasks["tasks"][number] & { dueDate: Date }>
+}) {
+  const dateColumns = useMemo(() => {
+    if (tasks.length === 0) return []
+
+    const dueDates = tasks.map((t) => t.dueDate.getTime())
+    const minTime = Math.min(...dueDates)
+    const maxTime = Math.max(...dueDates)
+
+    const columns: Date[] = []
+    const current = new Date(minTime)
+    while (current.getTime() <= maxTime) {
+      columns.push(new Date(current))
+      current.setDate(current.getDate() + 1)
+    }
+    return columns
+  }, [tasks])
+
+  const taskDateMap = useMemo(() => {
+    const map = new Map<string, Set<string>>()
+    for (const task of tasks) {
+      const key = getDateKey(task.dueDate)
+      if (!map.has(key)) map.set(key, new Set())
+      map.get(key)!.add(task.id)
+    }
+    return map
+  }, [tasks])
+
+  if (dateColumns.length === 0) return null
+
+  const ROW_H = 36
+  const COL_W = 100
+  const LABEL_W = 180
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="rounded-xl border border-border bg-card overflow-hidden"
+    >
+      <div className="overflow-x-auto">
+        <div
+          className="relative"
+          style={{ minWidth: LABEL_W + dateColumns.length * COL_W }}
+        >
+          {/* Header row */}
+          <div className="flex border-b border-border">
+            {/* Sticky label header */}
+            <div
+              className="sticky left-0 z-20 flex shrink-0 items-center border-r border-border bg-card px-4"
+              style={{ width: LABEL_W, height: ROW_H }}
+            >
+              <span className="font-mono text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+                Task
+              </span>
+            </div>
+
+            {/* Date columns */}
+            <div className="flex">
+              {dateColumns.map((date, i) => {
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6
+                return (
+                  <div
+                    key={i}
+                    className={`flex shrink-0 items-center justify-center border-r border-dashed border-border/50 font-mono text-[10px] ${
+                      isWeekend
+                        ? "text-amber-400/70 bg-amber-500/5"
+                        : "text-muted-foreground"
+                    }`}
+                    style={{ width: COL_W, height: ROW_H }}
+                  >
+                    {formatGanttDate(date)}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Task rows */}
+          {tasks.map((task, rowIndex) => {
+            const colors = ASSIGNEE_COLORS[task.assignee_type] ?? ASSIGNEE_COLORS.employee
+
+            return (
+              <motion.div
+                key={task.id}
+                variants={listItemVariants}
+                className={`flex border-b border-border/30 last:border-b-0 ${
+                  rowIndex % 2 === 1 ? "bg-muted/5" : ""
+                }`}
+              >
+                {/* Sticky task name */}
+                <div
+                  className="sticky left-0 z-10 flex shrink-0 items-center gap-2 border-r border-border bg-card px-4"
+                  style={{ width: LABEL_W, height: ROW_H }}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 shrink-0 rounded-full ${colors.bg}`}
+                  />
+                  <span className="min-w-0 truncate text-sm font-medium">
+                    {task.title}
+                  </span>
+                </div>
+
+                {/* Date cells */}
+                <div className="flex">
+                  {dateColumns.map((date, colIndex) => {
+                    const dateKey = getDateKey(date)
+                    const isHit = taskDateMap.get(dateKey)?.has(task.id)
+                    const isWeekend =
+                      date.getDay() === 0 || date.getDay() === 6
+
+                    return (
+                      <div
+                        key={colIndex}
+                        className={`flex shrink-0 items-center justify-center border-r border-dashed border-border/30 ${
+                          isWeekend ? "bg-amber-500/5" : ""
+                        }`}
+                        style={{ width: COL_W, height: ROW_H }}
+                      >
+                        {isHit && (
+                          <div
+                            className={`h-5 rounded-md ${colors.bg} shadow-[0_0_10px_1px] ${colors.glow}`}
+                            style={{ width: COL_W * 0.75 }}
+                          />
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="flex items-center gap-5 border-t border-border px-4 py-2.5">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+          Assignee
+        </span>
+        {Object.entries(ASSIGNEE_LABELS).map(([key, { label }]) => {
+          const colors = ASSIGNEE_COLORS[key] ?? ASSIGNEE_COLORS.employee
+          return (
+            <div key={key} className="flex items-center gap-1.5">
+              <div className={`h-2 w-4 rounded-sm ${colors.bg}`} />
+              <span className="text-[10px] text-muted-foreground">{label}</span>
+            </div>
+          )
+        })}
+      </div>
     </motion.div>
   )
 }
