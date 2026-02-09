@@ -20,6 +20,8 @@ import {
   ListChecks,
   Hash,
   ChevronRight,
+  List,
+  GitBranch,
 } from "lucide-react"
 import {
   pageVariants,
@@ -74,10 +76,13 @@ const ASSIGNEE_LABELS: Record<string, { label: string; icon: typeof User }> = {
   custom_email: { label: "Custom Email", icon: Mail },
 }
 
+type TaskView = "list" | "timeline"
+
 export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [previewDate, setPreviewDate] = useState("")
+  const [taskView, setTaskView] = useState<TaskView>("list")
 
   const previewSchedule = useMemo(() => {
     if (!previewDate) return null
@@ -228,7 +233,38 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
 
       {/* Task List */}
       <section className="mb-10">
-        <h2 className="mb-4 text-xl font-semibold tracking-tight">Tasks</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold tracking-tight">Tasks</h2>
+
+          {template.tasks.length > 0 && (
+            <div className="flex items-center rounded-lg border border-border bg-card p-0.5">
+              <button
+                type="button"
+                onClick={() => setTaskView("list")}
+                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  taskView === "list"
+                    ? "bg-primary/15 text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <List className="h-3.5 w-3.5" />
+                List
+              </button>
+              <button
+                type="button"
+                onClick={() => setTaskView("timeline")}
+                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  taskView === "timeline"
+                    ? "bg-primary/15 text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <GitBranch className="h-3.5 w-3.5" />
+                Timeline
+              </button>
+            </div>
+          )}
+        </div>
 
         {template.tasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
@@ -239,8 +275,9 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
               No tasks defined yet. Edit this template to add tasks.
             </p>
           </div>
-        ) : (
+        ) : taskView === "list" ? (
           <motion.div
+            key="list-view"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -263,6 +300,76 @@ export function TemplateDetail({ template, skipWeekends }: TemplateDetailProps) 
                   AssigneeIcon={AssigneeIcon}
                   attachments={attachments}
                 />
+              )
+            })}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="timeline-view"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="relative pl-8"
+          >
+            {/* Timeline vertical line */}
+            <div className="absolute left-[11px] top-2 bottom-2 w-px bg-primary/20" />
+
+            {template.tasks.map((task, index) => {
+              const assignee = ASSIGNEE_LABELS[task.assignee_type] ?? ASSIGNEE_LABELS.employee
+              const AssigneeIcon = assignee.icon
+              const attachments = (task.attachments ?? []) as {
+                name: string
+                url: string
+              }[]
+              const isLast = index === template.tasks.length - 1
+
+              return (
+                <motion.div
+                  key={task.id}
+                  variants={listItemVariants}
+                  className={`relative ${isLast ? "" : "pb-6"}`}
+                >
+                  {/* Node */}
+                  <div className="absolute -left-8 top-1.5 flex h-[22px] w-[22px] items-center justify-center">
+                    <div className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_2px] shadow-primary/30" />
+                  </div>
+
+                  {/* Content card */}
+                  <div className="rounded-lg border border-border/50 bg-card/60 px-4 py-3 transition-colors hover:bg-card/80">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-mono text-primary/70">
+                            +{task.day_offset}d
+                          </span>
+                          <span className="text-sm font-medium truncate">
+                            {task.title}
+                          </span>
+                        </div>
+
+                        {task.description && (
+                          <p className="mt-1 text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                            {task.description}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex shrink-0 items-center gap-2">
+                        <Badge variant="outline" className="gap-1 py-0 h-5 text-[10px]">
+                          <AssigneeIcon className="h-2.5 w-2.5" />
+                          {assignee.label}
+                        </Badge>
+
+                        {attachments.length > 0 && (
+                          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <Paperclip className="h-2.5 w-2.5" />
+                            {attachments.length}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               )
             })}
           </motion.div>
